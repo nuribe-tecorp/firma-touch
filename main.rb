@@ -17,6 +17,11 @@ get '/form' do
   erb :form
 end
 
+get '/touch' do
+  # Render the form.html file
+  erb :touch
+end
+
 post '/upload' do
 	json_body = JSON.parse(request.body.read)
 	content = json_body['file'].split(';')[1].split(',')[1]
