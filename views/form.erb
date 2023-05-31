@@ -17,6 +17,11 @@
     canvas.addEventListener("mouseup", stopDrawing);
     canvas.addEventListener("mouseout", stopDrawing);
 
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchcancel', stopDrawing);
+    canvas.addEventListener('touchmove', draw);
+
     function startDrawing(event) {
       isDrawing = true;
       context.beginPath();
