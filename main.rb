@@ -14,7 +14,7 @@ end
 
 get '/form' do
   # Render the form.html file
-  erb :svg
+  erb :form
 end
 
 post '/upload' do
