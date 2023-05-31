@@ -26,7 +26,7 @@ post '/upload' do
 	json_body = JSON.parse(request.body.read)
 	content = json_body['file'].split(';')[1].split(',')[1]
 	# Save the uploaded file to disk
-	File.open('uploads/signature.png', "w") do |f|
+	File.open('./public/uploads/signature.png', "w") do |f|
 		f.write(Base64.decode64(content))
 		# f.write content
 	end

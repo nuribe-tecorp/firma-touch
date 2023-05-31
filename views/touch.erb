@@ -12,6 +12,7 @@ canvas {
 
 <div id="canvas_div" style="overflow-x: auto;">
 <canvas id="canvas" width="900" height="360"></canvas>
+  <button onclick="postDrawing()">Post Drawing Now</button>
 <button onclick="javascript:clearArea();return false;">Clear Area</button>
 Line width : <select id="selWidth">
     <option value="6">6</option>
@@ -32,6 +33,10 @@ Color : <select id="selColor">
     <option value="gray">gray</option>
 </select>
 </div>
+
+<div>
+  <img src="/uploads/signature.png">
+  </div>
 
 <script>
 const canvas = document.getElementById('canvas');
@@ -123,4 +128,26 @@ function clearArea() {
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
 }
+
+function postDrawing() {
+      const dataURL = canvas.toDataURL(); // convert canvas to data URL
+
+      fetch("/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ file: dataURL })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to post drawing");
+        }
+        alert("Drawing posted successfully");
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Failed to post drawing");
+      });
+    }
 </script>
