@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas Drawing Example</title>
+</head>
+<body>
+  <canvas id="myCanvas" width="500" height="500"></canvas>
+  <button onclick="postDrawing()">Post Drawing</button>
+
+  <script>
+    const canvas = document.getElementById("myCanvas");
+    const context = canvas.getContext("2d");
+    let isDrawing = false;
+    
+    canvas.addEventListener("mousedown", startDrawing);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mouseup", stopDrawing);
+    canvas.addEventListener("mouseout", stopDrawing);
+
+    function startDrawing(event) {
+      isDrawing = true;
+      context.beginPath();
+      context.moveTo(event.offsetX, event.offsetY);
+    }
+
+    function draw(event) {
+      if (!isDrawing) return;
+      context.lineTo(event.offsetX, event.offsetY);
+      context.stroke();
+    }
+
+    function stopDrawing(event) {
+      isDrawing = false;
+    }
+
+    function postDrawing() {
+      const dataURL = canvas.toDataURL(); // convert canvas to data URL
+
+      fetch("http://localhost:4567/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ file: dataURL })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to post drawing");
+        }
+        alert("Drawing posted successfully");
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Failed to post drawing");
+      });
+    }
+  </script>
+</body>
+</html>
